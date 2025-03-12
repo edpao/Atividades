@@ -1,18 +1,11 @@
-select 
-    p.nome as produto,
-    count(a.id_produto) as quantidade
-from 
-    agedamento a
-join 
-    produto p on a.id_produto = p.id
-where 
-    a.id = @pedido_id
-group by 
+SELECT 
+    p.nome AS produto,
+    SUM(ap.quantidade) AS quantidade
+FROM 
+    agendamento_produto ap
+JOIN 
+    produto p ON ap.id_produto = p.id
+WHERE 
+    ap.id_agendamento = @pedido_id
+GROUP BY 
     p.nome;
-
-create procedure LimitarPedidosMesasEmAtendimento()
-begin
-    update mesa
-    set status = 'closed'
-    where status = 'open';
-end //
